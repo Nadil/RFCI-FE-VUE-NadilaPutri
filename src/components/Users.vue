@@ -32,8 +32,6 @@
 
 <script>
 import axios from "axios";
-import { mapState } from "vuex";
-import { INCREMENT } from "../mutation-types";
 
 export default {
   name: "Users",
@@ -48,13 +46,15 @@ export default {
       return this.$store.getters.getCountData;
     },
   },
-  mounted() {
-    axios
+  async asyncData() {
+    return {
+      users: axios
       .get("https://jsonplaceholder.typicode.com/users")
       .then((response) => {
         this.setData(response.data);
       })
-      .catch((error) => (this.loading = false));
+      .catch(() => (this.loading = false))
+    }
   },
   methods: {
     setData(data) {
@@ -69,6 +69,10 @@ export default {
 .main {
   background-color: #f5f7fa;
   padding: 10px;
+}
+.main-title {
+  font-size: 24px;
+  font-weight: 600;
 }
 .count {
   color: #83dd8b;
